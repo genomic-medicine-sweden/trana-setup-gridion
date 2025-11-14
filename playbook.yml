@@ -2,10 +2,45 @@
 - name: Install TRANA
   hosts: localhost
   become: yes
+  vars:
+    trana_path: "/home/grid/opt/trana"
+    install_path: "/home/grid/install/trana"
   tasks:
-      - name: Update apt cache
-        apt:
-          update_cache=yes
-          cache_valid_time=7200
-      - name: Install APT packages
-        apt: name=docker
+  - name: Update apt cache
+    apt:
+      update_cache=yes
+      cache_valid_time=7200
+
+  - name: Install APT packages
+    apt: name=docker
+
+  - name: Clone the TRANA repo
+    git:
+        repo: https://github.com/genomic-medicine-sweden/TRANA.git
+        dest: "{{ trana_path }}"
+        clone: yes
+
+  - name: Run TRANA install script
+    shell: |
+        cd "{{ trana_path }}"
+        make install
+
+  - name: Download pixi
+    get_url:
+        url: https://github.com/prefix-dev/pixi/releases/download/v0.59.0/pixi-x86_64-unknown-linux-musl.tar.gz
+        dest: "{{ install_path }}"
+
+  - name: Create bin folder
+    ansible.builtin.file:
+        path: /home/grid/bin
+        state: directory
+
+  - name: Add bin folder to PATH
+    lineinfile:
+        path: /home/grid/.bashrc
+        line: "PATH=/home/grid/bin:$PATH"
+
+  - name: Unarchive pixi
+    unarchive:
+        src: pixi-x86_64-unknown-linux-musl.tar.gz
+        dest: "/home/grid/bin"
