@@ -1,7 +1,6 @@
 ---
 - name: Install TRANA
   hosts: localhost
-  become: yes
   vars:
     trana_path: "/home/grid/opt/trana"
     install_path: "/home/grid/install/trana"
@@ -10,6 +9,7 @@
     apt:
       update_cache=yes
       cache_valid_time=7200
+    become: yes
 
   - name: Install APT packages
     apt: name=docker
@@ -19,6 +19,7 @@
         repo: https://github.com/genomic-medicine-sweden/TRANA.git
         dest: "{{ trana_path }}"
         clone: yes
+        force: yes
 
   - name: Run TRANA install script
     shell: |
@@ -44,3 +45,22 @@
     unarchive:
         src: pixi-x86_64-unknown-linux-musl.tar.gz
         dest: "/home/grid/bin"
+
+  - name: Create pixi environment
+    shell: |
+        cd "{{ trana_path }}"
+        /home/grid/bin/pixi init -q --no-progress --format pixi "{{ trana_path }}"
+    args:
+        creates: "{{ trana_path }}/pixi.toml"
+
+  - name: Add bioconda channel to pixi environment
+    lineinfile:
+        path: "{{ trana_path }}/pixi.toml"
+        regexp: "^channels\ "
+        line: 'channels = ["conda-forge", "bioconda"]'
+
+  - name: Install Nextflow via Pixi
+    shell: |
+        /home/grid/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow
+    args:
+        creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
