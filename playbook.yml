@@ -65,3 +65,13 @@
         /home/grid/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
+
+  - name: Download the bartender GUI
+    get_url:
+        url: https://github.com/samuell/bartender/releases/download/v0.1.0/bartender-v0.1.0-linux-amd64-static-musl.tar.gz
+        dest: "{{ install_path }}"
+
+  - name: Unarchive bartender
+    unarchive:
+        src: bartender-v0.1.0-linux-amd64-static-musl.tar.gz
+        dest: "/home/grid/bin"
