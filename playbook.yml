@@ -75,3 +75,19 @@
     unarchive:
         src: bartender-v0.1.0-linux-amd64-static-musl.tar.gz
         dest: "/home/grid/bin"
+
+  - name: Download ontime
+    get_url:
+        url: https://github.com/mbhall88/ontime/releases/download/0.3.1/ontime-0.3.1-x86_64-unknown-linux-musl.tar.gz
+        dest: "{{ install_path }}"
+
+  - name: Unarchive ontime
+    unarchive:
+        src: ontime-0.3.1-x86_64-unknown-linux-musl.tar.gz
+        dest: "{{ install_path }}"
+
+  - name: Move ontime to destination
+    copy:
+        src: "{{ install_path }}/ontime-0.3.1-x86_64-unknown-linux-musl/ontime"
+        dest: "/home/grid/bin"
+        mode: "a=rx"
