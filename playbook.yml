@@ -22,9 +22,9 @@
         force: yes
 
   - name: Run TRANA install script
-    shell: |
-        cd "{{ trana_path }}"
-        make install
+    make:
+        chdir: "{{ trana_path }}"
+        target: install
 
   - name: Download pixi
     get_url:
