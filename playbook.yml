@@ -12,7 +12,8 @@
     become: yes
 
   - name: Install APT packages
-    apt: name=docker
+    apt: name=singularity-container
+    become: yes
 
   - name: Clone the TRANA repo
     git:
