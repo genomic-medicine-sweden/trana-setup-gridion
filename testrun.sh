@@ -9,7 +9,7 @@ pixi run nextflow  \
     -c ${installdir}/gridion.config \
     -log $(pwd)/nextflow.log \
     run main.nf \
-    -profile docker,gridion \
+    -profile singularity,gridion \
     --outdir ${outdir} \
     --db $(pwd)/assets/databases/emu_database \
     --krona_taxonomy_tab $(pwd)/assets/databases/krona/taxonomy/taxonomy.tab \
