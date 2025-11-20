@@ -1,6 +1,6 @@
 #!/bin/bash
 installdir=$(pwd)
-nfdir=/home/grid/opt/trana
+nfdir=/data/trana/trana
 workdir=/data/trana/work
 start_timestamp=$(date +%Y%m%d-%H%M%S)
 outdir=/data/trana/results/trana_run_${start_timestamp}

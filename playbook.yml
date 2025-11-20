@@ -2,8 +2,8 @@
 - name: Install TRANA
   hosts: localhost
   vars:
-    trana_path: "/home/grid/opt/trana"
-    install_path: "/home/grid/install/trana"
+    trana_path: "/data/trana/trana"
+    install_path: "/data/trana/install"
   tasks:
   - name: Update apt cache
     apt:
@@ -34,23 +34,23 @@
 
   - name: Create bin folder
     ansible.builtin.file:
-        path: /home/grid/bin
+        path: /data/trana/bin
         state: directory
 
   - name: Add bin folder to PATH
     lineinfile:
         path: /home/grid/.bashrc
-        line: "PATH=/home/grid/bin:$PATH"
+        line: "PATH=/data/trana/bin:$PATH"
 
   - name: Unarchive pixi
     unarchive:
         src: pixi-x86_64-unknown-linux-musl.tar.gz
-        dest: "/home/grid/bin"
+        dest: "/data/trana/bin"
 
   - name: Create pixi environment
     shell: |
         cd "{{ trana_path }}"
-        /home/grid/bin/pixi init -q --no-progress --format pixi "{{ trana_path }}"
+        /data/trana/bin/pixi init -q --no-progress --format pixi "{{ trana_path }}"
     args:
         creates: "{{ trana_path }}/pixi.toml"
 
@@ -62,7 +62,7 @@
 
   - name: Install Nextflow via Pixi
     shell: |
-        /home/grid/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow
+        /data/trana/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
 
@@ -74,7 +74,7 @@
   - name: Unarchive bartender
     unarchive:
         src: bartender-v0.1.4-linux-amd64.tar.gz
-        dest: "/home/grid/bin"
+        dest: "/data/trana/bin"
 
   - name: Download ontime
     get_url:
@@ -89,5 +89,5 @@
   - name: Move ontime to destination
     copy:
         src: "{{ install_path }}/ontime-0.3.1-x86_64-unknown-linux-musl/ontime"
-        dest: "/home/grid/bin"
+        dest: "/data/trana/bin"
         mode: "a=rx"
