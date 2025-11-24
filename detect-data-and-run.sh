@@ -8,6 +8,8 @@ rundir=${tranadir}/run
 workdir=${tranadir}/work
 max_samplesize=30000
 
+pixi_bin=/data/trana/bin/pixi
+
 for samplesheet_path in /data/*/*/*/sample_sheet_*_*_*_*.csv; do
     data_dir=$(dirname ${samplesheet_path});
     fastq_pass_dir=${data_dir}/fastq_pass
@@ -20,26 +22,27 @@ for samplesheet_path in /data/*/*/*/sample_sheet_*_*_*_*.csv; do
     echo "--------------------------------------------------------------------------------";
     echo
 
-    if [[ -f ${data_dir}/tranarun.done ]]; then
-        echo "[x] This run is already finished by TRANA, so skipping: ${run_id}"
+    done_file=${data_dir}/tranarun.done;
+    if [[ -f ${done_file} ]]; then
+        echo "[x] This run is already finished by TRANA, so skipping: ${run_id} (Done file: ${done_file} )"
     else
         barcodesheet=${barcodesheetdir}/${run_id}.csv;
         echo "[?] Trana not run on this pipeline, so looking for barcodesheet ...";
         echo
-        lock_file=${data_dir}/tranarun.lck
+        lock_file=${rundir}/tranarun.lck
         if [[ ! -f ${barcodesheet} ]]; then
             echo "[!] Did not find corresponding barcodesheet ${barcodesheet} so skipping ..."
             echo
         else
             if [[ -f ${lock_file} ]]; then
-                echo "[!] Found lock file due to on-going TRANA run, so skipping (${lock_file})";
+                echo "[!] Found lock file due to on-going TRANA run, so skipping (Lock file: ${lock_file} )";
                 echo
             else
                 echo "[>] Found corresponding barcodesheet ${barcodesheet}, so starting analysis ..."
                 echo
                 echo "Creating lock file ${lock_file} ..."
                 echo
-                echo "$(date +%Y%m%d-%H%M%S) Trana run ongoing" > ${lock_file}
+                echo "$(date +%Y%m%d-%H%M%S) Trana run starting for ${data_dir}" > ${lock_file}
                 echo
 
                 start_timestamp=$(date +%Y%m%d-%H%M%S)
@@ -48,7 +51,7 @@ for samplesheet_path in /data/*/*/*/sample_sheet_*_*_*_*.csv; do
 
                 echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis for timelimit ${timelimit} of ${casename} with ${max_samplesize} reads"
                 cd ${nfdir} && \
-                pixi run nextflow  \
+                ${pixi_bin} run nextflow  \
                     -c ${installdir}/gridion.config \
                     -log ${logfile} \
                     run main.nf \
@@ -63,7 +66,8 @@ for samplesheet_path in /data/*/*/*/sample_sheet_*_*_*_*.csv; do
                     --merge_fastq_pass ${fastq_pass_dir} \
                     --barcodes_samplesheet ${barcodesheet} \
                     --outdir ${outdir} \
-                    -w ${workdir};
+                    -w ${workdir} \
+                    && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" > ${done_file};
                 echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for timelimit ${timelimit} of ${casedir} with ${max_samplesize} reads"
                 echo
                 echo "[x] Removing lock file ${lock_file}"
