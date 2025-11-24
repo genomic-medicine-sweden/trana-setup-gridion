@@ -2,6 +2,8 @@
 tranadir=/data/trana
 barcodesheetdir=${tranadir}/barcodesheets
 
+runname_prefix="16s_ont_"
+
 installdir=${tranadir}/install
 nfdir=${tranadir}/trana
 rundir=${tranadir}/run
@@ -10,7 +12,7 @@ max_samplesize=30000
 
 pixi_bin=/data/trana/bin/pixi
 
-for samplesheet_path in /data/*/*/*/sample_sheet_*_*_*_*.csv; do
+for samplesheet_path in /data/${runname_prefix}*/*/*/sample_sheet_*_*_*_*.csv; do
     data_dir=$(dirname ${samplesheet_path});
     fastq_pass_dir=${data_dir}/fastq_pass
     run_id=$(echo ${samplesheet_path} | cut -d '/' -f 3);
@@ -76,4 +78,4 @@ for samplesheet_path in /data/*/*/*/sample_sheet_*_*_*_*.csv; do
             fi
         fi
     fi
-done |& tee trana-check-$(date +%Y%m%d-%H%M%S).log
+done &> /dev/null # |& tee trana-check-$(date +%Y%m%d-%H%M%S).log
