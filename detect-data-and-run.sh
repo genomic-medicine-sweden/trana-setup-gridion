@@ -64,7 +64,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/sample_sheet_*_*_*_*.csv; d
                     --longread_qc_qualityfilter_minlength 1200 \
                     --longread_qc_qualityfilter_maxlength 1800 \
                     --sample_size ${max_samplesize} \
-                    --krona_taxonomy_tab ${nrdir}/assets/databases/krona/taxonomy/taxonomy.tab \
+                    --krona_taxonomy_tab ${nfdir}/assets/databases/krona/taxonomy/taxonomy.tab \
                     --merge_fastq_pass ${fastq_pass_dir} \
                     --barcodes_samplesheet ${barcodesheet} \
                     --outdir ${outdir} \
