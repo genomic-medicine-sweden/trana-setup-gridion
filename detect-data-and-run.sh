@@ -83,4 +83,4 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/sample_sheet_*_*_*_*.csv; d
             fi
         fi
     fi
-done &> /dev/null # |& tee trana-check-$(date +%Y%m%d-%H%M%S).log
+done &> /dev/null # |& tee trana-check-$(date +%Y%m%d-%H%M%S).log #
