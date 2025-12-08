@@ -9,7 +9,7 @@ nfdir=${tranadir}/trana
 rundir=${tranadir}/run
 workdir=${tranadir}/work
 max_samplesize=30000
-sleep_seconds_before_start=60
+sleep_seconds_before_start=10
 
 pixi_bin=/data/trana/bin/pixi
 
