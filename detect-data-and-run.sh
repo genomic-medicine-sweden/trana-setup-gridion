@@ -87,4 +87,4 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
             fi
         fi
     fi
-done &> /dev/null # |& tee trana-check-$(date +%Y%m%d-%H%M%S).log #
+done |& tee logs/trana-check-$(date +%Y%m%d-%H%M%S).log # &> /dev/null
