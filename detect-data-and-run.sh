@@ -9,6 +9,7 @@ nfdir=${tranadir}/trana
 rundir=${tranadir}/run
 workdir=${tranadir}/work
 max_samplesize=30000
+sleep_seconds_before_start=60
 
 pixi_bin=/data/trana/bin/pixi
 
@@ -22,6 +23,9 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
     echo "================================================================================";
     echo "${run_id} / ${flowcell_id} / ${samplesheet_file}";
     echo "--------------------------------------------------------------------------------";
+    echo
+    echo "Sleeping for ${sleep_seconds_before_start} seconds to allow any last files to get created ..."
+    sleep ${sleep_seconds_before_start}
     echo
 
     done_file=${data_dir}/tranarun.done;
