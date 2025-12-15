@@ -69,12 +69,12 @@
 
   - name: Download the bartender GUI
     get_url:
-        url: https://github.com/samuell/bartender/releases/download/v0.1.4/bartender-v0.1.4-linux-amd64.tar.gz
+        url: https://github.com/samuell/bartender/releases/download/v0.2.1/bartender-v0.2.1-linux-amd64.tar.gz
         dest: "{{ install_path }}"
 
   - name: Unarchive bartender
     unarchive:
-        src: bartender-v0.1.4-linux-amd64.tar.gz
+        src: bartender-v0.2.1-linux-amd64.tar.gz
         dest: "/data/trana/bin"
 
   - name: Download ontime
