@@ -55,9 +55,10 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                     echo "$(date +%Y%m%d-%H%M%S) Trana run starting for ${data_dir}" > ${lock_file}
                     echo
 
-                    start_timestamp=$(date +%Y%m%d-%H%M%S)
-                    outdir=/data/trana/output/${run_id}-${start_timestamp}
-                    logfile=${outdir}/trana-run-${run_id}-${start_timestamp}.log
+                    start_timestamp=$(date +%Y%m%d-%H%M%S);
+                    outdir=/data/trana/output/${run_id}-${start_timestamp};
+                    done_file_local=${outdir}/tranarun.done;
+                    logfile=${outdir}/trana-run-${run_id}-${start_timestamp}.log;
 
                     echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis for timelimit ${timelimit} of ${casename} with ${max_samplesize} reads"
                     cd ${nfdir} && \
@@ -77,7 +78,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                         --barcodes_samplesheet ${barcodesheet} \
                         --outdir ${outdir} \
                         -w ${workdir} \
-                        && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" > ${done_file};
+                        && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" | tee ${done_file} > ${done_file_local};
                     echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for timelimit ${timelimit} of ${casedir} with ${max_samplesize} reads"
                     echo
                     echo "[x] Removing lock file ${lock_file}"
