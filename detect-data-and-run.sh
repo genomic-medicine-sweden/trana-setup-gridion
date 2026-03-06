@@ -24,14 +24,15 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
     echo "${run_id} / ${flowcell_id} / ${samplesheet_file}";
     echo "--------------------------------------------------------------------------------";
     echo
-    echo "Sleeping for ${sleep_seconds_before_start} seconds to allow any last files to get created ..."
-    sleep ${sleep_seconds_before_start}
-    echo
 
     done_file=${data_dir}/tranarun.done;
     if [[ -f ${done_file} ]]; then
         echo "[x] This run is already finished by TRANA, so skipping: ${run_id} (Done file: ${done_file} )"
     else
+        echo "Sleeping for ${sleep_seconds_before_start} seconds to allow any last files to get created ..."
+        sleep ${sleep_seconds_before_start}
+        echo
+
         fastq_pass_dir=${data_dir}/fastq_pass
         if [[ ! -d ${fastq_pass_dir} ]]; then
             echo "[!] No fastq_pass folder in ${data_dir} so not starting TRANA!"
