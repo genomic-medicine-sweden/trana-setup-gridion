@@ -4,6 +4,8 @@ barcodesheetdir=${tranadir}/barcodesheets
 
 runname_prefix="16s_ont_"
 
+export NXF_OFFLINE="true"
+
 installdir=${tranadir}/install
 nfdir=${tranadir}/trana
 rundir=${tranadir}/run
