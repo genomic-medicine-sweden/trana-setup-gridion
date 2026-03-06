@@ -79,6 +79,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                         --krona_taxonomy_tab ${nfdir}/assets/databases/krona/taxonomy/taxonomy.tab \
                         --merge_fastq_pass ${fastq_pass_dir} \
                         --barcodes_samplesheet ${barcodesheet} \
+                        --keep_files \
                         --outdir ${outdir} \
                         -w ${workdir} \
                         && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" | tee ${done_file} > ${done_file_local};
