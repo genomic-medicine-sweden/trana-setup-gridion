@@ -6,10 +6,12 @@ runname_prefix="16s_ont_"
 
 export NXF_OFFLINE="true"
 
+run_pipeline=0
 installdir=${tranadir}/install
 nfdir=${tranadir}/trana
 rundir=${tranadir}/run
 workdir=${tranadir}/work
+outdir=${tranadir}/output
 max_samplesize=30000
 sleep_seconds_before_start=10
 
@@ -59,31 +61,41 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                     echo
 
                     start_timestamp=$(date +%Y%m%d-%H%M%S);
-                    outdir=/data/trana/output/${run_id}-${start_timestamp};
-                    done_file_local=${outdir}/tranarun.done;
-                    logfile=${outdir}/trana-run-${run_id}-${start_timestamp}.log;
+                    run_outdir=${outdir}/${run_id}-${start_timestamp};
+                    done_file_local=${run_outdir}/tranarun.done;
+                    logfile=${run_outdir}/trana-run-${run_id}-${start_timestamp}.log;
 
-                    echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis for timelimit ${timelimit} of ${casename} with ${max_samplesize} reads"
-                    cd ${nfdir} && \
-                    ${pixi_bin} run nextflow  \
-                        -c ${installdir}/gridion.config \
-                        -log ${logfile} \
-                        run main.nf \
-                        -profile singularity,gridion \
-                        --db ${nfdir}/assets/databases/emu_database \
-                        --seqtype map-ont \
-                        --quality_filtering \
-                        --longread_qc_qualityfilter_minlength 1200 \
-                        --longread_qc_qualityfilter_maxlength 1800 \
-                        --sample_size ${max_samplesize} \
-                        --krona_taxonomy_tab ${nfdir}/assets/databases/krona/taxonomy/taxonomy.tab \
-                        --merge_fastq_pass ${fastq_pass_dir} \
-                        --barcodes_samplesheet ${barcodesheet} \
-                        --keep_files \
-                        --outdir ${outdir} \
-                        -w ${workdir} \
-                        && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" | tee ${done_file} > ${done_file_local};
-                    echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for timelimit ${timelimit} of ${casedir} with ${max_samplesize} reads"
+                    if run_pipeline; then
+                        echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis for timelimit ${timelimit} of ${casename} with ${max_samplesize} reads"
+                        cd ${nfdir} && \
+                        ${pixi_bin} run nextflow  \
+                            -c ${installdir}/gridion.config \
+                            -log ${logfile} \
+                            run main.nf \
+                            -profile singularity,gridion \
+                            --db ${nfdir}/assets/databases/emu_database \
+                            --seqtype map-ont \
+                            --quality_filtering \
+                            --longread_qc_qualityfilter_minlength 1200 \
+                            --longread_qc_qualityfilter_maxlength 1800 \
+                            --sample_size ${max_samplesize} \
+                            --krona_taxonomy_tab ${nfdir}/assets/databases/krona/taxonomy/taxonomy.tab \
+                            --merge_fastq_pass ${fastq_pass_dir} \
+                            --barcodes_samplesheet ${barcodesheet} \
+                            --keep_files \
+                            --outdir ${run_outdir} \
+                            -w ${workdir} \
+                            && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" | tee ${done_file} > ${done_file_local};
+                        echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for timelimit ${timelimit} of ${casedir} with ${max_samplesize} reads"
+                    else
+                        echo "Skipped running pipeline, since run_pipeline is set to false"
+                    fi;
+                    echo
+                    echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting producing 16S report for ${casename} with ${max_samplesize} reads"
+                    for sample_path in ${run_outdir}/results/*_filtered.fastq_rel-abundance.tsv; do
+                        echo "SAMPLE PATH: ${sample_path}";
+                    done
+                    echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finishing producing 16S report for ${casename} with ${max_samplesize} reads"
                     echo
                     echo "[x] Removing lock file ${lock_file}"
                     rm ${lock_file}
