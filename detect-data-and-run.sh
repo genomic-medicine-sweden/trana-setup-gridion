@@ -92,9 +92,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                     fi;
                     echo
                     echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting producing 16S report for ${casename} with ${max_samplesize} reads"
-                    for sample_path in ${run_outdir}/results/*_filtered.fastq_rel-abundance.tsv; do
-                        echo "SAMPLE PATH: ${sample_path}";
-                    done
+                        ./create-reports.sh ${run_outdir}
                     echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finishing producing 16S report for ${casename} with ${max_samplesize} reads"
                     echo
                     echo "[x] Removing lock file ${lock_file}"
