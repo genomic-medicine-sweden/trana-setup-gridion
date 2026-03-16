@@ -6,7 +6,8 @@ runname_prefix="16s_ont_"
 
 export NXF_OFFLINE="true"
 
-run_pipeline=0
+# Change the below line to 0 to test only the report generation
+run_pipeline=1
 installdir=${tranadir}/install
 nfdir=${tranadir}/trana
 rundir=${tranadir}/run
