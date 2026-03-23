@@ -96,7 +96,7 @@
 
   - name: Download 16S Report
     git:
-        repo: https://github.com/AnnaNoren/16s-report.git
+        repo: https://github.com/AnnaNoren/tranavy.git
         dest: "{{ report_path }}"
         clone: yes
         force: yes
