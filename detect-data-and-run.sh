@@ -66,7 +66,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                     done_file_local=${run_outdir}/tranarun.done;
                     logfile=${run_outdir}/trana-run-${run_id}-${start_timestamp}.log;
 
-                    if run_pipeline; then
+                    if [[ $run_pipeline ]]; then
                         echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis for timelimit ${timelimit} of ${casename} with ${max_samplesize} reads"
                         cd ${nfdir} && \
                         ${pixi_bin} run nextflow  \
