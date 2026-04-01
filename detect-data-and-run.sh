@@ -93,7 +93,8 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                     fi;
                     echo
                     echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting producing 16S report for ${casename} with ${max_samplesize} reads"
-                        ./create-reports.sh ${run_outdir}
+                        cd ${rundir};
+                        ./create-reports.sh ${run_outdir};
                     echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finishing producing 16S report for ${casename} with ${max_samplesize} reads"
                     echo
                     echo "[x] Removing lock file ${lock_file}"
