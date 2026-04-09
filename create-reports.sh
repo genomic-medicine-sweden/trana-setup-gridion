@@ -1,10 +1,17 @@
 #!/bin/bash
-
 if [ -z $1 ]; then
     echo "Usage: create-reports.sh <run-outdir>"
     exit 1
 fi
 run_outdir=$1
+
+# Make execution more robust
+# -e          : Exit immediately on error
+# -u          : Treat unset variables as an error
+# -o pipefail : Changes the return code of a pipeline to the last command with
+#               a non-zero exit code
+set -euo pipefail
+
 
 pixi_path=/data/trana/bin/pixi
 reporttool_dir=/data/trana/16s-report
