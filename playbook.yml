@@ -7,15 +7,6 @@
     install_path: "/data/trana/install"
     run_path: "/data/trana/run"
   tasks:
-  - name: Update apt cache
-    apt:
-      update_cache=yes
-      cache_valid_time=7200
-
-  #- name: Install APT packages
-  #  apt: name=singularity-container
-  #  become: yes
-
   - name: Clone the TRANA repo
     git:
         repo: https://github.com/genomic-medicine-sweden/TRANA.git
