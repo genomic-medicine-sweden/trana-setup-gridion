@@ -88,6 +88,9 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                             -w ${workdir} \
                             && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" | tee ${done_file} > ${done_file_local};
                         echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for timelimit ${timelimit} of ${casedir} with ${max_samplesize} reads"
+                        echo "[>] Copying Nanopore run report into run outfolder ..."
+                        cp ${data_dir}/report*.html ${run_outdir}/;
+                        echo "[x] Done copying Nanopore run report into run outfolder ..."
                     else
                         echo "Skipped running pipeline, since run_pipeline is set to false"
                     fi;
