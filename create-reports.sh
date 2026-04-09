@@ -7,7 +7,8 @@ fi
 run_outdir=$1
 
 pixi_path=/data/trana/bin/pixi
-reporttool_path=/data/trana/16s-report/make_report.py
+reporttool_dir=/data/trana/16s-report
+reporttool_path=${reporttool_dir}/make_report.py
 report_dir=${run_outdir}/reports
 
 mkdir -p ${report_dir}
@@ -31,15 +32,13 @@ for sample_path in ${run_outdir}/results/*_downsampled.fastq_rel-abundance.tsv; 
         echo "SAMPLE NAME: ${sample_name}"
         echo "NEG CONTROL: ${neg_control}"
         report_file=${report_dir}/${sample_name}_report.html
+        cd ${reporttool_dir};
         ${pixi_path} run python ${reporttool_path} \
-            --input_dir ${run_outdir} \
-            --sample_name ${sample_name} \
-            --neg_control ${neg_control} \
-            --output_file ${report_file}
-        #${pixi_path} run python -m ipdb -c c ${reporttool_path} \
-        #    --input_dir ${run_outdir} \
-        #    --sample_name ${sample_name} \
-        #    --neg_control ${neg_control}
+            --input-dir ${run_outdir} \
+            --sample-name ${sample_name} \
+            --neg-control ${neg_control} \
+            --alignment-metrics \
+            --output-file ${report_file}
     else
         echo "Skipping control sample ${sample_path} ..."
     fi
