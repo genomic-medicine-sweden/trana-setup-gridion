@@ -91,6 +91,9 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                         echo "[>] Copying Nanopore run report into run outfolder ..."
                         cp ${data_dir}/report*.html ${run_outdir}/;
                         echo "[x] Done copying Nanopore run report into run outfolder ..."
+                        echo "[>] Copying barcodesheet into run outfolder"
+                        cp ${barcodesheet} ${run_outdir}/;
+                        echo "[x] Done copying barcodesheet into run outfolder"
                     else
                         echo "Skipped running pipeline, since run_pipeline is set to false"
                     fi;
