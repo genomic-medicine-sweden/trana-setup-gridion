@@ -1,4 +1,11 @@
 #!/bin/bash
+# Make execution more robust
+# -e          : Exit immediately on error
+# -u          : Treat unset variables as an error
+# -o pipefail : Changes the return code of a pipeline to the last command with
+#               a non-zero exit code
+set -euo pipefail
+
 tranadir=/data/trana
 barcodesheetdir=${tranadir}/barcodesheets
 
@@ -67,7 +74,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                     logfile=${run_outdir}/trana-run-${run_id}-${start_timestamp}.log;
 
                     if [[ $run_pipeline ]]; then
-                        echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis for timelimit ${timelimit} of ${casename} with ${max_samplesize} reads"
+                        echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting analysis of ${run_id} with ${max_samplesize} reads"
                         cd ${nfdir} && \
                         ${pixi_bin} run nextflow  \
                             -c ${installdir}/gridion.config \
@@ -87,7 +94,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                             --outdir ${run_outdir} \
                             -w ${workdir} \
                             && echo "TRANA run completed at $(date +%Y%m%d-%H%M%S)" | tee ${done_file} > ${done_file_local};
-                        echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for timelimit ${timelimit} of ${casedir} with ${max_samplesize} reads"
+                        echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finished analysis for ${run_id} with ${max_samplesize} reads"
                         echo "[>] Copying Nanopore run report into run outfolder ..."
                         cp ${data_dir}/report*.html ${run_outdir}/;
                         echo "[x] Done copying Nanopore run report into run outfolder ..."
@@ -98,10 +105,10 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                         echo "Skipped running pipeline, since run_pipeline is set to false"
                     fi;
                     echo
-                    echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting producing 16S report for ${casename} with ${max_samplesize} reads"
+                    echo "[>] $(date '+%Y-%m-%d %H:%M:%S'): Starting producing 16S report for ${run_id} with ${max_samplesize} reads"
                         cd ${rundir};
                         ./create-reports.sh ${run_outdir};
-                    echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finishing producing 16S report for ${casename} with ${max_samplesize} reads"
+                    echo "[x] $(date '+%Y-%m-%d %H:%M:%S'): Finishing producing 16S report for ${run_id} with ${max_samplesize} reads"
                     echo
                     echo "[x] Removing lock file ${lock_file}"
                     rm ${lock_file}
