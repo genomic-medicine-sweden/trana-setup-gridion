@@ -5,16 +5,16 @@
     trana_path: "/data/trana/trana"
     report_path: "/data/trana/16s-report"
     install_path: "/data/trana/install"
+    run_path: "/data/trana/run"
   tasks:
   - name: Update apt cache
     apt:
       update_cache=yes
       cache_valid_time=7200
-    become: yes
 
-  - name: Install APT packages
-    apt: name=singularity-container
-    become: yes
+  #- name: Install APT packages
+  #  apt: name=singularity-container
+  #  become: yes
 
   - name: Clone the TRANA repo
     git:
@@ -41,7 +41,7 @@
 
   - name: Add bin folder to PATH
     lineinfile:
-        path: /home/grid/.bashrc
+        path: "{{ ansible_user_dir }}/.bashrc"
         line: "PATH=/data/trana/bin:$PATH"
 
   - name: Unarchive pixi
@@ -62,9 +62,9 @@
         regexp: "^channels\ "
         line: 'channels = ["conda-forge", "bioconda"]'
 
-  - name: Install Nextflow via Pixi
+  - name: Install Nextflow and Singularity via Pixi
     shell: |
-        /data/trana/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow
+        /data/trana/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow singularity
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
 
@@ -96,8 +96,22 @@
 
   - name: Download 16S Report
     git:
-        repo: https://github.com/samuell/tranavy-fork.git
+        repo: https://github.com/AnnaNoren/tranavy.git
         dest: "{{ report_path }}"
         clone: yes
         force: yes
         version: dev
+
+  - name: Create run folder
+    ansible.builtin.file:
+        path: "{{ run_path }}"
+        state: directory
+
+  - name: Create symlink to detect-and-run script
+    ansible.builtin.file:
+        src: "{{ install_path }}/{{ item }}"
+        dest: "{{ run_path }}/{{ item }}"
+        state: link
+    loop:
+      - detect-data-and-run.sh
+      - create-reports.sh
