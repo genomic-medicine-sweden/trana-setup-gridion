@@ -2,10 +2,12 @@
 - name: Install TRANA
   hosts: localhost
   vars:
-    trana_path: "/data/trana/trana"
-    report_path: "/data/trana/16s-report"
-    install_path: "/data/trana/install"
-    run_path: "/data/trana/run"
+    base_path: "/data/trana"
+    bin_path: "{{ base_path }}/bin"
+    trana_path: "{{ base_path }}/trana"
+    report_path: "{{ base_path }}/16s-report"
+    install_path: "{{ base_path }}/install"
+    run_path: "{{ base_path }}/run"
   tasks:
   - name: Clone the TRANA repo
     git:
@@ -27,23 +29,23 @@
 
   - name: Create bin folder
     ansible.builtin.file:
-        path: /data/trana/bin
+        path: "{{ bin_path }}"
         state: directory
 
   - name: Add bin folder to PATH
     lineinfile:
         path: "{{ ansible_user_dir }}/.bashrc"
-        line: "PATH=/data/trana/bin:$PATH"
+        line: "PATH={{ bin_path }}:$PATH"
 
   - name: Unarchive pixi
     unarchive:
         src: pixi-x86_64-unknown-linux-musl.tar.gz
-        dest: "/data/trana/bin"
+        dest: "{{ bin_path }}"
 
   - name: Create pixi environment
     shell: |
         cd "{{ trana_path }}"
-        /data/trana/bin/pixi init -q --no-progress --format pixi "{{ trana_path }}"
+        "{{ bin_path }}/pixi" init -q --no-progress --format pixi "{{ trana_path }}"
     args:
         creates: "{{ trana_path }}/pixi.toml"
 
@@ -55,7 +57,7 @@
 
   - name: Install Nextflow and Singularity via Pixi
     shell: |
-        /data/trana/bin/pixi add --manifest-path "{{ trana_path }}/pixi.toml" nextflow singularity
+        "{{ bin_path }}/pixi" add --manifest-path "{{ trana_path }}/pixi.toml" nextflow singularity
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
 
@@ -67,7 +69,7 @@
   - name: Unarchive bartender
     unarchive:
         src: bartender-v0.2.1-linux-amd64.tar.gz
-        dest: "/data/trana/bin"
+        dest: "{{ bin_path }}"
 
   - name: Download ontime
     get_url:
@@ -82,7 +84,7 @@
   - name: Move ontime to destination
     copy:
         src: "{{ install_path }}/ontime-0.3.1-x86_64-unknown-linux-musl/ontime"
-        dest: "/data/trana/bin"
+        dest: "{{ bin_path }}"
         mode: "a=rx"
 
   - name: Download 16S Report
