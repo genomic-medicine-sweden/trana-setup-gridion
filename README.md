@@ -15,7 +15,22 @@ sudo apt install ansible
 
 ## Usage
 
-To install TRANA, run the following make command:
+To install TRANA on a GridIon, or comparabla compter, do the following:
+
+### Create a trana + install folder and enter it
+
+```bash
+mkdir -p /data/trana/install
+cd /data/trana/install
+```
+
+### Clone the repository there
+
+```bash
+git clone https://github.com/genomic-medicine-sweden/trana-setup-gridion.git .
+```
+
+### Run the ansible script via make
 
 ```bash
 make install
