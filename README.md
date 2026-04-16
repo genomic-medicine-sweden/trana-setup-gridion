@@ -21,12 +21,14 @@ To install TRANA on a GridIon, or comparabla compter, do the following:
 
 ```bash
 mkdir -p /data/trana/install
-cd /data/trana/install
 ```
 
-### Clone the repository there
+### Clone the repository into /data/trana/install
+
+(Don't miss the dot in the end of the git command)
 
 ```bash
+cd /data/trana/install
 git clone https://github.com/genomic-medicine-sweden/trana-setup-gridion.git .
 ```
 
