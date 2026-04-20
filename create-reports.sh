@@ -34,25 +34,20 @@ for sample_path in ${run_outdir}/results/*_downsampled.fastq_rel-abundance.tsv; 
         echo "Skipping sample ${sample_path} as negative control is missing";
         continue;
     else
-        if [[ ${sample_path} == *NEG* || ${sample_path} == *POS* ]]; then
-            echo "Skipping control sample ${sample_path} ..."
-            continue
-        else
-            echo
-            echo "--------------------------------------------------------------------------------"
-            echo "SAMPLE PATH: ${sample_path}";
-            sample_name=$(basename ${sample_path})
-            sample_name=${sample_name%_downsampled.fastq_rel-abundance.tsv}
-            echo "SAMPLE NAME: ${sample_name}"
-            echo "NEG CONTROL: ${neg_control}"
-            report_file=${report_dir}/${sample_name}_report.html
-            cd ${reporttool_dir};
-            ${pixi_path} run python ${reporttool_path} \
-                --input-dir ${run_outdir} \
-                --sample-name ${sample_name} \
-                --neg-control ${neg_control} \
-                --alignment-metrics \
-                --output-file ${report_file}
-        fi
+        echo
+        echo "--------------------------------------------------------------------------------"
+        echo "SAMPLE PATH: ${sample_path}";
+        sample_name=$(basename ${sample_path})
+        sample_name=${sample_name%_downsampled.fastq_rel-abundance.tsv}
+        echo "SAMPLE NAME: ${sample_name}"
+        echo "NEG CONTROL: ${neg_control}"
+        report_file=${report_dir}/${sample_name}_report.html
+        cd ${reporttool_dir};
+        ${pixi_path} run python ${reporttool_path} \
+            --input-dir ${run_outdir} \
+            --sample-name ${sample_name} \
+            --neg-control ${neg_control} \
+            --alignment-metrics \
+            --output-file ${report_file}
     fi
 done
