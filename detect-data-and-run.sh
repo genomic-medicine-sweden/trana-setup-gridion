@@ -21,7 +21,7 @@ rundir=${tranadir}/run
 workdir=${tranadir}/work
 outdir=${tranadir}/output
 max_samplesize=30000
-sleep_seconds_before_start=10
+sleep_seconds_before_start=1
 
 pixi_bin=/data/trana/bin/pixi
 
