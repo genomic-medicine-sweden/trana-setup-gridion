@@ -4,6 +4,7 @@
   vars:
     base_path: "/data/trana"
     bin_path: "{{ base_path }}/bin"
+    barcodesheets_path : "{{ base_path }}/barcodesheets"
     trana_path: "{{ base_path }}/trana"
     report_path: "{{ base_path }}/16s-report"
     install_path: "{{ base_path }}/install"
@@ -67,6 +68,11 @@
         cd "{{ trana_path }}" && "{{ bin_path }}/pixi" run nextflow plugin install "nf-schema@{{ nf_schema_ver }}"
     args:
         creates: "{{ ansible_env.HOME }}/.nextflow/plugins/nf-schema-{{ nf_schema_ver }}/META-INF/MANIFEST.MF"
+
+  - name: Create barcodesheets folder
+    ansible.builtin.file:
+        path: "{{ barcodesheets_path }}"
+        state: directory
 
   - name: Download the bartender GUI
     get_url:
