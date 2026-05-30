@@ -90,7 +90,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                             --quality_filtering \
                             --longread_qc_qualityfilter_minlength 1200 \
                             --longread_qc_qualityfilter_maxlength 1800 \
-                            --sample_size ${max_samplesize} \
+                            --downsample_n_reads ${max_samplesize} \
                             --krona_taxonomy_tab ${nfdir}/assets/databases/krona/taxonomy/taxonomy.tab \
                             --merge_fastq_pass ${fastq_pass_dir} \
                             --barcodes_samplesheet ${barcodesheet} \
