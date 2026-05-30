@@ -57,7 +57,7 @@
 
   - name: Install Nextflow and Singularity via Pixi
     shell: |
-        "{{ bin_path }}/pixi" add --manifest-path "{{ trana_path }}/pixi.toml" nextflow singularity
+        "{{ bin_path }}/pixi" add --manifest-path "{{ trana_path }}/pixi.toml" nextflow=25.10.4 singularity
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
 
