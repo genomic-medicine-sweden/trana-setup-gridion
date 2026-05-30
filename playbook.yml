@@ -8,6 +8,7 @@
     report_path: "{{ base_path }}/16s-report"
     install_path: "{{ base_path }}/install"
     run_path: "{{ base_path }}/run"
+    nf_schema_ver: "2.2.0"
   tasks:
   - name: Clone the TRANA repo
     git:
@@ -61,11 +62,11 @@
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
 
-  - name: Install nf-core plugin
+  - name: Install nf-schema plugin
     shell: |
-        "{{ bin_path }}/pixi" run nextflow install
+        cd "{{ trana_path }}" && "{{ bin_path }}/pixi" run nextflow plugin install "nf-schema@{{ nf_schema_ver }}"
     args:
-        creates: "{{ ansible_env.HOME }}/.nextflow/plugins/nf-schema-2.2.0/META-INF/MANIFEST.MF"
+        creates: "{{ ansible_env.HOME }}/.nextflow/plugins/nf-schema-{{ nf_schema_ver }}/META-INF/MANIFEST.MF"
 
   - name: Download the bartender GUI
     get_url:
