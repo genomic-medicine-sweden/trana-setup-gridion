@@ -25,6 +25,10 @@ sleep_seconds_before_start=1
 
 pixi_bin=/data/trana/bin/pixi
 
+# Ensure the logs directory exists
+mkdir -p logs
+
+# Run the main loop
 for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
     data_dir=$(dirname ${samplesheet_path});
     fastq_pass_dir=${data_dir}/fastq_pass
