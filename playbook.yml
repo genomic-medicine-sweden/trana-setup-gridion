@@ -61,6 +61,12 @@
     args:
         creates: "{{ trana_path }}/.pixi/envs/default/bin/nextflow"
 
+  - name: Install nf-core plugin
+    shell: |
+        "{{ bin_path }}/pixi" run nextflow install
+    args:
+        creates: "{{ ansible_env.HOME }}/.nextflow/plugins/nf-schema-2.2.0/META-INF/MANIFEST.MF"
+
   - name: Download the bartender GUI
     get_url:
         url: https://github.com/samuell/bartender/releases/download/v0.2.1/bartender-v0.2.1-linux-amd64.tar.gz
