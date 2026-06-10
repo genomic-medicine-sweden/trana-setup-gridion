@@ -86,7 +86,7 @@ for samplesheet_path in /data/${runname_prefix}*/*/*/final_summary_*.txt; do
                             run main.nf \
                             -profile singularity,gridion \
                             --db ${nfdir}/assets/databases/emu_database \
-                            --seqtype map-ont \
+                            --seqtype "lr:hq" \
                             --quality_filtering \
                             --longread_qc_qualityfilter_minlength 1200 \
                             --longread_qc_qualityfilter_maxlength 1800 \
