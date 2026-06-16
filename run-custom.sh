@@ -49,7 +49,7 @@ ${pixi_bin} run nextflow  \
     -profile singularity,gridion \
     --input ${samplesheet} \
     --db ${nfdir}/assets/databases/emu_database \
-    --seqtype "map-ont" \
+    --seqtype "lr:hq" \
     --quality_filtering \
     --longread_qc_qualityfilter_minlength 1200 \
     --longread_qc_qualityfilter_maxlength 1800 \
