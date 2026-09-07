@@ -43,7 +43,7 @@ for sample_path in ${run_outdir}/results/*_downsampled.fastq_rel-abundance.tsv; 
         echo "NEG CONTROL: ${neg_control}"
         report_file=${report_dir}/${sample_name}_report.html
         cd ${reporttool_dir};
-        ${pixi_path} run python ${reporttool_path} \
+        ${pixi_path} run --frozen python ${reporttool_path} \
             --input-dir ${run_outdir} \
             --sample-name ${sample_name} \
             --neg-control ${neg_control} \
