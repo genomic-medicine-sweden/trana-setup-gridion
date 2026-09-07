@@ -76,7 +76,7 @@
 
   - name: Download the bartender GUI
     get_url:
-        url: https://github.com/samuell/bartender/releases/download/v0.2.1/bartender-v0.2.1-linux-amd64.tar.gz
+        url: https://github.com/kclinmicro/bartender/releases/download/v0.2.1/bartender-v0.2.1-linux-amd64.tar.gz
         dest: "{{ install_path }}"
 
   - name: Unarchive bartender
@@ -102,11 +102,11 @@
 
   - name: Download 16S Report
     git:
-        repo: https://github.com/AnnaNoren/tranavy.git
+        repo: https://github.com/kclinmicro/tranavy.git
         dest: "{{ report_path }}"
         clone: yes
         force: yes
-        version: dev
+        version: "v1.0.0"
 
   - name: Create run folder
     ansible.builtin.file:
