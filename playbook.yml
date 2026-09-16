@@ -17,7 +17,7 @@
         dest: "{{ trana_path }}"
         clone: yes
         force: yes
-        version: "v1.0.0"
+        version: "v1.1.0"
 
   - name: Run TRANA install script
     make:
